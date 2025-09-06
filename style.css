@@ -57,9 +57,7 @@ button {
 
 button:hover {
     background: var(--primary-hover);
-}
-
-/* Cards */
+}/* Cards container */
 #cards {
     display: flex;
     flex-wrap: wrap;
@@ -68,28 +66,63 @@ button:hover {
     margin: 20px 0;
 }
 
-/* Hover effect for cards */
-.card-content:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--)dark 0px 4px 12px rgba(0, 0, 0, 0.2);
-}
+/* --- FLIP CARD LAYOUT --- */
 
-/* Card style */
 .card-content {
-    display: flex; 
-    flex-direction: column;   
-    justify-content: flex-start;
-    align-items: center;
-    background: var(--light);;
-    padding: 16px;
+    perspective: 1000px;
     width: 220px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: var(--)dark 0px 4px 12px rgba(0, 0, 0, 0.2);
+    height: 280px;
 }
 
-/* Profile image */
-.card-content img {
+/* The rotating element */
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+/* Flip on toggle */
+.card-content.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Faces share base styles */
+.card-front,
+.card-back {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: var(--light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+
+    backface-visibility: hidden;
+
+}
+
+/* Back face is rotated */
+.card-back {
+    transform: rotateY(180deg);
+    text-align: left;
+    overflow-y: auto;
+}
+
+/* Hover lift (optional) */
+.card-content:hover .card-inner {
+    transform: translateY(-5px);
+}
+
+/* Front content styles */
+.card-front img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
@@ -97,34 +130,33 @@ button:hover {
     margin-bottom: 12px;
 }
 
-/* Make text readable & spaced */
-.card-content h3 {
+.card-front h3 {
     margin: 8px 0 4px;
     font-size: 1.1rem;
 }
 
-.card-content p {
+.card-front p {
     margin: 4px 0;
     font-size: 0.9rem;
     line-height: 1.4;
 }
 
-/* Remove button: Remove hidden attribute within the index.html*/
-.card-content button {
+/* Remove button (if shown) */
+.card-front .remove,
+.card-back .remove {
     margin-top: auto;
     padding: 6px 12px;
     border: none;
     border-radius: 6px;
     background: var(--danger);
-    color: white;
+    color: var(--light);
     cursor: pointer;
 }
 
 .remove {
     margin-top: 10px;
     background: var(--danger);
-    color: white;
-}
+    color: var(--light);}
 
 .remove:hover {
     background: var(--danger-hover);

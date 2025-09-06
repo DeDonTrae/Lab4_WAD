@@ -24,18 +24,35 @@ function renderAll() {
     tbody.innerHTML = "";
 
     students.forEach(data => {
+        const yearDescription =
+            data.year === "4" ? "Post Graduate" :
+                Number(data.year) <= 3 ? "Under Graduate" : "";
+
         // --- Cards ---
         const card = document.createElement("div");
-        const yearDescription = data.year === "4" ? "Post Graduate" : Number(data.year) <= 3 ? "Under Graduate"
-            : "";;
         card.className = "card-content";
         card.innerHTML = `
-          <img src="${data.photo || "https://placehold.co/128"}" loading="lazy" alt="Profile of ${data.first}">
-          <h3>${data.first} ${data.last}</h3>
-          <p>${data.prog}</p>
-          <p>${yearDescription}</p>
-          <button class="remove" hidden>Remove</button>
+          <div class="card-inner">
+            <div class="card-front">
+              <img src="${data.photo || "https://placehold.co/128"}" loading="lazy" alt="Profile of ${data.first}">
+              <h3>${data.first} ${data.last}</h3>
+              <p>${data.prog}</p>
+              <p>${yearDescription}</p>
+              <button class="remove" hidden>Remove</button>
+            </div>
+            <div class="card-back">
+              <h4>Details</h4>
+              <p><strong>Email:</strong> ${data.email}</p>
+              <p><strong>Interests:</strong> ${data.interests || "N/A"}</p>
+            </div>
+          </div>
         `;
+
+        // flip card on click
+        card.addEventListener("click", () => {
+            card.classList.toggle("flipped");
+        });
+
         cards.prepend(card);
 
         // --- Summary Table ---
@@ -49,15 +66,13 @@ function renderAll() {
         `;
         tbody.appendChild(tr);
 
-        // Remove handler
-        card.querySelector(".remove").addEventListener("click", () => {
+        // Remove handler (must select inside card)
+        card.querySelector(".remove").addEventListener("click", (e) => {
+            e.stopPropagation(); // prevent flip on remove
             students = students.filter(s => s.email !== data.email);
             renderAll();
         });
     });
-
-    // Update JSON dump
-    // document.getElementById("jsonDump").textContent = JSON.stringify(students, null, 2);
 }
 
 //Registration Form Exception Handler
