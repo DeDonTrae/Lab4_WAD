@@ -68,7 +68,6 @@ button:hover {
 
 /* --- FLIP CARD LAYOUT --- */
 
-/* Wrapper with perspective (no flex here) */
 .card-content {
     perspective: 1000px;
     width: 220px;
