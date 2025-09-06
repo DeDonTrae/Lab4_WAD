@@ -4,37 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Profile Cards</title>
     <title>Student Profile Cards</title>
     <meta name="author" content="Raimo Dengeinge (220121273)">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="outer-container">
+    <div class="container">
+        <header>
+            <h1>Student Cards</h1>
+        </header>
+        <button id="openModalSummary">Summary of all</button>
+        <button id="openModal">+ Add Student</button>
 
-        <div class="container">
-            <header>
-                <h1>Student Cards</h1>
-                <button id="openModal">+ Add Student</button>
-            </header>
+        <!-- Profile Cards -->
+        <section id="cards"></section>
 
-            <!-- Profile Cards -->
-            <section id="cards"></section>
+        <!-- Hidden Summary Table  -->
+        <table id="summary" hidden>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Programme</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
 
-            <!-- Hidden Summary Table  -->
-            <table id="summary" hidden>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Programme</th>
-                        <th>Year</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-
-        </div>
     </div>
 
     <!-- Registration Modal -->
@@ -64,7 +61,7 @@
                     <label><input type="radio" name="year" value="1" required> 1</label>
                     <label><input type="radio" name="year" value="2"> 2</label>
                     <label><input type="radio" name="year" value="3"> 3</label>
-                    <label><input type="radio" name="year" value="4"> 4</label>
+                    <label><input type="radio" name="year" value="4"> 4(Honours)</label>
                 </fieldset>
                 <small class="error" id="err-year"></small>
 
@@ -73,6 +70,7 @@
 
                 <label for="photo">Photo URL</label>
                 <input type="url" id="photo" placeholder="https://...">
+                <small class="error" id="err-photo"></small>
 
                 <div aria-live="polite" id="live"></div>
 
@@ -80,7 +78,28 @@
             </form>
         </div>
     </div>
+    <!-- Summary Modal -->
+    <div id="summaryModal" class="modal">
+        <div class="modal-content">
+            <span id="closeSummaryModal" class="close">&times;</span>
+            <h2>Summary of all Card details</h2>
+            <div class="table-wrapper"> <!-- wraper div for table to make it scrollable -->
 
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Year</th>
+                            <th>Programme</th>
+                            <th>Email</th>
+                            <th>Interests</th>
+                        </tr>
+                    </thead>
+                    <tbody id="summaryBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <script src="script.js" defer></script>
 </body>
 

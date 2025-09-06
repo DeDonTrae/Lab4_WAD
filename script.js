@@ -3,7 +3,7 @@ let students = [
     {
         first: "Raimo",
         last: "Dengeinge",
-        email: "raimo@example.com",
+        email: "220121273@nust.na",
         prog: "Software Engineering",
         year: "3",
         interests: "C#, Backend, FullStack, Cisco, Networking",
@@ -19,32 +19,39 @@ function validateEmail(value) {
 // Render everything
 function renderAll() {
     const cards = document.getElementById("cards");
-    const tbody = document.querySelector("#summary tbody");
+    const tbody = document.getElementById("summaryBody");
     cards.innerHTML = "";
     tbody.innerHTML = "";
 
     students.forEach(data => {
-        // Card
+        // --- Cards ---
         const card = document.createElement("div");
+        const yearDescription = data.year === "4" ? "Post Graduate" : Number(data.year) <= 3 ? "Under Graduate"
+            : "";;
         card.className = "card-content";
         card.innerHTML = `
-      <img src="${data.photo || "https://placehold.co/128"}" loading="lazy" alt="Profile of ${data.first}">
-      <h3>${data.first} ${data.last}</h3>
-      <p>${data.prog} - Year ${data.year}</p>
-      <h3>Email:${data.email}</h3>
-      <h3>Interests: ${data.interests}</h3>
-      <button class="remove" hidden>Remove</button>
-    `;
+          <img src="${data.photo || "https://placehold.co/128"}" loading="lazy" alt="Profile of ${data.first}">
+          <h3>${data.first} ${data.last}</h3>
+          <p>${data.prog}</p>
+          <p>${yearDescription}</p>
+          <button class="remove" hidden>Remove</button>
+        `;
         cards.prepend(card);
 
-        // Table List of all Profiles
-        // const tr = document.createElement("tr");
-        // tr.innerHTML = `<td>${data.first} ${data.last}</td><td>${data.prog}</td><td>${data.year}</td>`;
-        // tbody.prepend(tr);
+        // --- Summary Table ---
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${data.first} ${data.last}</td>
+          <td>${data.year}</td>
+          <td>${data.prog}</td>
+          <td>${data.email}</td>          
+          <td>${data.interests || "NONE"}</td>
+        `;
+        tbody.appendChild(tr);
 
         // Remove handler
         card.querySelector(".remove").addEventListener("click", () => {
-            students = students.filter(s => !(s.email === data.email));
+            students = students.filter(s => s.email !== data.email);
             renderAll();
         });
     });
@@ -82,6 +89,9 @@ document.getElementById("regForm").addEventListener("submit", (e) => {
     if (!year) { document.getElementById("err-year").textContent = "Select a year"; valid = false; }
     else { document.getElementById("err-year").textContent = ""; }
 
+    if (!photo) { document.getElementById("err-photo").textContent = "Enter a URL of you image"; valid = false; }
+    else { document.getElementById("err-photo").textContent = ""; }
+
     if (!valid) {
         document.getElementById("live").textContent = "Please fix errors before submitting.";
         return;
@@ -104,6 +114,20 @@ const modal = document.getElementById("modal");
 document.getElementById("openModal").addEventListener("click", () => modal.style.display = "flex");
 document.getElementById("closeModal").addEventListener("click", closeModal);
 window.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+
+// Summary Modal logic
+const summaryModal = document.getElementById("summaryModal");
+document.getElementById("openModalSummary").addEventListener("click", () => {
+    summaryModal.style.display = "flex";
+});
+
+document.getElementById("closeSummaryModal").addEventListener("click", () => {
+    summaryModal.style.display = "none";
+});
+
+window.addEventListener("click", (e) => {
+    if (e.target === summaryModal) summaryModal.style.display = "none";
+});
 
 function closeModal() { modal.style.display = "none"; }
 
